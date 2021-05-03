@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://www.gstatic.com/firebasejs/ui/4.8.0/firebase-ui-auth.js"></script>
+    <!-- <script src="./app.js"></script> -->
+  </head>
+  <body>
+    <h1>This is the code for opt verification</h1>
+
+    <label></label>
+
+    <div id="recaptcha"></div>
+
+    <button onclick="myFunction()">Click</button>
+
+    <script>
+      var firebaseConfig = {
+        apiKey: 'AIzaSyDUC_pEtnlZ2fyg_jy9E_8TcLydhGVK_vw',
+        authDomain: 'fir-pds-login.firebaseapp.com',
+        projectId: 'fir-pds-login',
+        storageBucket: 'fir-pds-login.appspot.com',
+        messagingSenderId: '989020340749',
+        appId: '1:989020340749:web:948ea252a8348674764b44',
+        measurementId: 'G-0KS8EE2XRJ',
+      };
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+
+      function myFunction() {
+        var recaptcha = new firebase.auth.RecaptchaVerifier('recaptcha');
+        var number = '+xxxxxxxxxxx';
+        firebase
+          .auth()
+          .signInWithPhoneNumber(number, recaptcha)
+          .then(function (e) {
+            var code = prompt('Enter the otp', '');
+
+            if (code === null) return;
+
+            e.confirm(code)
+              .then(function (result) {
+                console.log(result.user);
+
+                document.querySelector('label').textContent +=
+                  result.user.phoneNumber + 'Number verified';
+              })
+              .catch(function (error) {
+                console.error(error);
+              });
+          })
+          .catch(function (error) {
+            console.error(error);
+          });
+      }
+
+      //   firebase.analytics();
+    </script>
+    <script src="https://www.gstatic.com/firebasejs/8.4.1/firebase-app.js"></script>
+
+    <!-- If you enabled Analytics in your project, add the Firebase SDK for Analytics -->
+    <script src="https://www.gstatic.com/firebasejs/8.4.1/firebase-analytics.js"></script>
+
+    <!-- Add Firebase products that you want to use -->
+    <script src="https://www.gstatic.com/firebasejs/8.4.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.4.1/firebase-firestore.js"></script>
+  </body>
+</html>
