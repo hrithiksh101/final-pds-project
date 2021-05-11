@@ -5,7 +5,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <title>Sign in & Sign up Form</title>
+    
+
   </head>
+
+  <!-- Adding the materialize here -->
+  <!-- Compiled and minified CSS -->
+  <!-- <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
+  /> 
+
+  <!-- Compiled and minified JavaScript -->
+ <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>  -->
+
+  <!-- Adding the materialize here -->
+
+  <link rel="stylesheet" href="./app.css">
+
   <body>
     <div class="container">
       <div class="forms-container">
@@ -46,17 +63,10 @@
 
             <!-- The surrounding HTML is left untouched by FirebaseUI.
      Your app may use that space for branding, controls and other customizations.-->
-            <h1>Welcome to My Awesome App</h1>
-
-            <button onclick="myFunction3(event)">Google Auth</button>
-            <div id="firebaseui-auth-container"></div>
-            <div id="loader">Loading...</div>
-
-            <!-- google authentication here -->
           </form>
           <form action="#" onsubmit="return false" class="sign-up-form">
-            <h2 class="title">Sign up</h2>
-            <div class="input-field">
+            <!-- <h2 class="title">Sign up</h2> -->
+            <!-- <div class="input-field">
               <i class="fas fa-user"></i>
               <input type="text" placeholder="Username" id="userNameSignUp" />
             </div>
@@ -78,8 +88,8 @@
               value="Sign up"
               id="signUpButton"
             />
-            <p class="social-text">Or Sign up with social platforms</p>
-            <div class="social-media">
+            <p class="social-text">Or Sign up with social platforms</p> -->
+            <!-- <div class="social-media">
               <a href="#" class="social-icon">
                 <i class="fab fa-facebook-f"></i>
               </a>
@@ -92,15 +102,28 @@
               <a href="#" class="social-icon">
                 <i class="fab fa-linkedin-in"></i>
               </a>
-            </div>
+            </div> -->
 
-            <h1>This is the code for opt verification</h1>
+            <!-- <h1>This is the code for opt verification</h1>
 
             <label></label>
 
             <div id="recaptcha"></div>
 
-            <button onclick="myFunction()">Click</button>
+            <button onclick="myFunction()">Click</button> -->
+
+            <div class="login-app">
+              <!-- <h1>Welcome to My Awesome App</h1> -->
+
+              <!-- <h1 class="signUpButtonss" onclick="myFunction3()" ></h1> -->
+
+                <button class="batan" onclick="myFunction3()">Sign Up</button>
+              
+              <div id="firebaseui-auth-container"></div>
+              <!-- <div id="loader">Loading...</div> -->
+
+              <!-- google authentication here -->
+            </div>
           </form>
         </div>
       </div>
@@ -174,144 +197,47 @@
 
     <!-- Add Firebase products that you want to use -->
     <script src="https://www.gstatic.com/firebasejs/8.4.1/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.4.1/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.4.1/firebase-firestore.js">
+          //
 
-    <script type="module" src="./app2.js">
-      // enabling firebase ui signin with google
-    </script>
+          // this is the otp function
+          function myFunction() {
+            // e.preventDefault() ;
+            var recaptcha = new firebase.auth.RecaptchaVerifier('recaptcha');
+            var number = '+919407514872';
+            firebase
+              .auth()
+              .signInWithPhoneNumber(number, recaptcha)
+              .then(function (e) {
+                var code = prompt('Enter the otp', '');
 
-    <script>
-      // Your web app's Firebase configuration
-      // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-      var firebaseConfig = {
-        apiKey: 'AIzaSyDUC_pEtnlZ2fyg_jy9E_8TcLydhGVK_vw',
-        authDomain: 'fir-pds-login.firebaseapp.com',
-        projectId: 'fir-pds-login',
-        storageBucket: 'fir-pds-login.appspot.com',
-        messagingSenderId: '989020340749',
-        appId: '1:989020340749:web:948ea252a8348674764b44',
-        measurementId: 'G-0KS8EE2XRJ',
-      };
-      // Initialize Firebase
-      firebase.initializeApp(firebaseConfig);
-      firebase.analytics();
-      function myFunction3(event) {
-        event.preventDefault();
+                if (code === null) return;
 
-        //   var firebase = require('firebase');
-        //   var firebaseui = require('firebaseui');
+                console.log('otp verification in process');
 
-        var ui = new firebaseui.auth.AuthUI(firebase.auth());
-
-        // Initialize the FirebaseUI Widget using Firebase.
-        // var ui = new firebaseui.auth.AuthUI(firebase.auth());
-        var uiConfig = {
-          callbacks: {
-            signInSuccessWithAuthResult: function (authResult, redirectUrl) {
-              // User successfully signed in.
-              // Return type determines whether we continue the redirect automatically
-              // or whether we leave that to developer to handle.
-
-              console.log(' i was inside ') ;
-              window.location.href = "http://www.w3schools.com";
-              return false;
-              // return true;
-            },
-            uiShown: function () {
-              // The widget is rendered.
-              // Hide the loader.
-              document.getElementById('loader').style.display = 'none';
-            },
-          },
-          // Will use popup for IDP Providers sign-in flow instead of the default, redirect.
-          signInFlow: 'popup',
-          signInSuccessUrl: 'www.google.com',
-          signInOptions: [
-            // Leave the lines as is for the providers you want to offer your users.
-            firebase.auth.GoogleAuthProvider.PROVIDER_ID,
-            firebase.auth.FacebookAuthProvider.PROVIDER_ID,
-          ],
-          // Terms of service url.
-          tosUrl: '<your-tos-url>',
-          // Privacy policy url.
-          privacyPolicyUrl: '<your-privacy-policy-url>',
-        };
-
-        // The start method will wait until the DOM is loaded.
-        // ui.start('#firebaseui-auth-container', uiConfig);
-
-        // merging accounts normal and google
-        // Temp variable to hold the anonymous user data if needed.
-        var data = null;
-        // Hold a reference to the anonymous current user.
-        var anonymousUser = firebase.auth().currentUser;
-        ui.start('#firebaseui-auth-container', {
-          // Whether to upgrade anonymous users should be explicitly provided.
-          // The user must already be signed in anonymously before FirebaseUI is
-          // rendered.
-          autoUpgradeAnonymousUsers: true,
-          signInSuccessUrl: '/index2.html',
-          signInOptions: [
-            firebase.auth.GoogleAuthProvider.PROVIDER_ID,
-            firebase.auth.FacebookAuthProvider.PROVIDER_ID,
-            firebase.auth.EmailAuthProvider.PROVIDER_ID,
-            firebase.auth.PhoneAuthProvider.PROVIDER_ID,
-          ],
-          callbacks: {
-            // signInFailure callback must be provided to handle merge conflicts which
-            // occur when an existing credential is linked to an anonymous user.
-            signInFailure: function (error) {
-              // For merge conflicts, the error.code will be
-              // 'firebaseui/anonymous-upgrade-merge-conflict'.
-              if (error.code != 'firebaseui/anonymous-upgrade-merge-conflict') {
-                return Promise.resolve();
-              }
-              // The credential the user tried to sign in with.
-              var cred = error.credential;
-              // Copy data from anonymous user to permanent user and delete anonymous
-              // user.
-              // ...
-              // Finish sign-in after data is copied.
-              return firebase.auth().signInWithCredential(cred);
-            },
-          },
-        });
-      }
-
-      //
-
-      // this is the otp function
-      function myFunction() {
-        // e.preventDefault() ;
-        var recaptcha = new firebase.auth.RecaptchaVerifier('recaptcha');
-        var number = '+919407514872';
-        firebase
-          .auth()
-          .signInWithPhoneNumber(number, recaptcha)
-          .then(function (e) {
-            var code = prompt('Enter the otp', '');
-
-            if (code === null) return;
-
-            console.log('otp verification in process');
-
-            e.confirm(code)
-              .then(function (result) {
-                console.log(result.user);
-                console.log(' i was here inside confirm ' ) ;
-                document.querySelector('label').textContent +=
-                  result.user.phoneNumber + 'Number verified';
+                e.confirm(code)
+                  .then(function (result) {
+                    console.log(result.user);
+                    console.log(' i was here inside confirm ' ) ;
+                    document.querySelector('label').textContent +=
+                      result.user.phoneNumber + 'Number verified';
+                  })
+                  .catch(function (error) {
+                    console.error(error);
+                  });
               })
               .catch(function (error) {
                 console.error(error);
               });
-          })
-          .catch(function (error) {
-            console.error(error);
-          });
-      }
-    </script>
+          }
 
+          // initializing firebase ui</script>
+
+
+
+
+    </script>
+    <script src="./firebaseConfig.js"></script>
     <script src="app.js"></script>
   </body>
 </html>
